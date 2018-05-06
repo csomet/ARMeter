@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC9F3E05209F66DB007F1352 /* demo.gif in Resources */ = {isa = PBXBuildFile; fileRef = EC9F3E04209F66DB007F1352 /* demo.gif */; };
 		ECC0594D2099007A0091D270 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0594C2099007A0091D270 /* AppDelegate.swift */; };
 		ECC0594F2099007A0091D270 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = ECC0594E2099007A0091D270 /* art.scnassets */; };
 		ECC059512099007A0091D270 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC059502099007A0091D270 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EC9F3E04209F66DB007F1352 /* demo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = demo.gif; sourceTree = "<group>"; };
 		ECC059492099007A0091D270 /* ARMeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARMeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECC0594C2099007A0091D270 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECC0594E2099007A0091D270 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -37,6 +39,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC9F3E03209F6557007F1352 /* demo */ = {
+			isa = PBXGroup;
+			children = (
+				EC9F3E04209F66DB007F1352 /* demo.gif */,
+			);
+			path = demo;
+			sourceTree = "<group>";
+		};
 		ECC059402099007A0091D270 = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +66,7 @@
 		ECC0594B2099007A0091D270 /* ARMeter */ = {
 			isa = PBXGroup;
 			children = (
+				EC9F3E03209F6557007F1352 /* demo */,
 				ECC0594C2099007A0091D270 /* AppDelegate.swift */,
 				ECC0594E2099007A0091D270 /* art.scnassets */,
 				ECC059502099007A0091D270 /* ViewController.swift */,
@@ -125,6 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC9F3E05209F66DB007F1352 /* demo.gif in Resources */,
 				ECC0594F2099007A0091D270 /* art.scnassets in Resources */,
 				ECC059592099007C0091D270 /* LaunchScreen.storyboard in Resources */,
 				ECC059562099007C0091D270 /* Assets.xcassets in Resources */,

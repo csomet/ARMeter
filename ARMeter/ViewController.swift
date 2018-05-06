@@ -14,20 +14,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    var nodes = [SCNNode]()
+    var textNode = SCNNode()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Set the view's delegate
         sceneView.delegate = self
+  
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
-        
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,34 +44,91 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+    func setText(text: String, at position: SCNVector3){
+        
+        //clear previous text
+        textNode.removeFromParentNode()
+        
+        let text3D = SCNText(string: text, extrusionDepth: 0.9)
+        text3D.firstMaterial?.diffuse.contents = UIColor.blue
+        textNode = SCNNode(geometry: text3D)
+        textNode.position = position
+        //reduce size 1% of original
+        textNode.scale = SCNVector3(0.01, 0.01, 0.01)
+        
+        sceneView.scene.rootNode.addChildNode(textNode)
+        
     }
-
-    // MARK: - ARSCNViewDelegate
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
+    
+    func calculate() {
+        
+        let start = nodes[0]
+        let end   = nodes[1]
      
-        return node
-    }
-*/
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
+        //Pitagoras Ecuation. We need calculate a,b,c (3D) points.
         
+        let a = end.position.x - start.position.x
+        let b = end.position.y - start.position.y
+        let c = end.position.z - start.position.z
+        
+        //Ecuation:
+        let distance = (sqrt(pow(a,2) + pow(b, 2) + pow(c, 2))) * 100
+        
+        setText(text: String(abs(distance)), at: end.position)
+
     }
     
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
+    func addDot(at hitResult: ARHitTestResult){
         
+        let spehere = SCNSphere(radius: 0.005)
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.red
+        spehere.materials = [material]
+        
+        let node = SCNNode(geometry: spehere)
+        
+        node.position = SCNVector3(hitResult.worldTransform.columns.3.x, hitResult.worldTransform.columns.3.y, hitResult.worldTransform.columns.3.z)
+    
+        sceneView.scene.rootNode.addChildNode(node)
+        
+        nodes.append(node)
+        
+        if nodes.count >= 2 {
+            calculate()
+        }
     }
     
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
+    
+    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
         
+        for node in nodes {
+            node.removeFromParentNode()
+        }
+        
+        textNode.removeFromParentNode()
+        nodes = [SCNNode]()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if nodes.count >= 2 {
+            for node in nodes {
+                node.removeFromParentNode()
+            }
+            
+            nodes = [SCNNode]()
+        }
+        
+        
+        if let touchLocation = touches.first?.location(in: sceneView) {
+            let hitTestResult = sceneView.hitTest(touchLocation, types: .featurePoint)
+            
+            if let hitResult = hitTestResult.first {
+                addDot(at: hitResult)
+            }
+        }
+    }
+    
+    
 }
